@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-
-	"github.com/ShubhamTiwari55/helloGo/internal/auth"
 	"github.com/ShubhamTiwari55/helloGo/internal/database"
 	"github.com/google/uuid"
 )
@@ -39,16 +37,6 @@ if err!= nil {
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
 
-func (apiCfg *apiConfig) handleGetUser(w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.GetAPIKey(r.Header)
-	if err != nil {
-		respondWithError(w, 400, fmt.Sprint("Error getting api key: ", err))
-		return
-	}
-	user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
-	if err != nil {
-		respondWithError(w, 400, fmt.Sprint("Error getting user: ", err))
-		return
-	}
+func (apiCfg *apiConfig) handleGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
