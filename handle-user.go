@@ -40,3 +40,15 @@ if err!= nil {
 func (apiCfg *apiConfig) handleGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, 200, databaseUserToUser(user))
 }
+
+func (apiCfg *apiConfig) handleGetPostForUsers(w http.ResponseWriter, r *http.Request, user database.User) {
+	posts, err := apiCfg.DB.GetPostsForUser(r.Context(), database.GetPostsForUserParams{
+		UserID: user.ID,
+		Limit: 10,
+	})
+	if err != nil {
+		respondWithError(w, 500, fmt.Sprint("Error getting posts: ", err))
+		return
+	}
+	respondWithJSON(w, 200, databasePostsToPosts(posts))
+}

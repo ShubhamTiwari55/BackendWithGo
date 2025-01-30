@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/ShubhamTiwari55/helloGo/internal/database"
 	"github.com/go-chi/chi"
@@ -20,7 +21,6 @@ type apiConfig struct{
 
 func main() {
 	fmt.Println("Hello, World!")
-
 	godotenv.Load()
 
 	//connecting to the database
@@ -44,6 +44,8 @@ func main() {
 		DB: database.New(conn),
 	}
 
+	go startScraping(database.New(conn), 10, time.Minute)
+
 	router := chi.NewRouter()
 
 	router.Use(cors.Handler(cors.Options{
@@ -63,6 +65,10 @@ func main() {
 	v1Router.Get("/users", apiCfg.middlewareAuth(apiCfg.handleGetUser))
 	v1Router.Post("/feeds", apiCfg.middlewareAuth(apiCfg.handleCreateFeed))
 	v1Router.Get("/feeds", apiCfg.handleGetFeeds)
+	v1Router.Post("/feeds_follows", apiCfg.middlewareAuth(apiCfg.handlerFeedFollowCreate))
+	v1Router.Get("/feeds_follows", apiCfg.middlewareAuth(apiCfg.handlerGetFeedFollow))
+	v1Router.Delete("/feeds_follows/{feedFollowID}", apiCfg.middlewareAuth(apiCfg.handlerFeedFollowDelete))
+	v1Router.Get("/posts", apiCfg.middlewareAuth(apiCfg.handleGetPostForUsers))
 
 	//creating the server
 	srv := &http.Server{
