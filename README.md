@@ -44,8 +44,8 @@ RSS feeds are a way for websites to publish updates to their content. You can us
 
 2. Create a `.env` file and configure your database credentials:
    ```env
-  PORT=yourPortNumber
-  DB_URL=yourDbUrl
+    PORT=yourPortNumber
+    DB_URL=yourDbUrl
    ```
 
 3. Install dependencies:
