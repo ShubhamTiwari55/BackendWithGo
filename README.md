@@ -38,8 +38,8 @@ RSS feeds are a way for websites to publish updates to their content. You can us
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/ShubhamTiwari55/rss-agg.git
-   cd rss-agg
+   git clone https://github.com/ShubhamTiwari55/RSS-Agg.git
+   cd RSS-Agg
    ```
 
 2. Create a `.env` file and configure your database credentials:
